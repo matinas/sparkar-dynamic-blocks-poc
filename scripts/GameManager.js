@@ -1,20 +1,22 @@
 import { DownloadAndInsantiateBlock } from './Utils.js';
-export const Diagnostics = require('Diagnostics');
-const Scene = require('Scene');
+
+export const _DEBUG = true;
+
+const Diagnostics = require('Diagnostics');
+const S = require('Scene');
 
 let trackerRoot;
 
 Promise.all(
-  [
-    Scene.root.findFirst("dragHere"),
-  ]
-).then(main).catch((error) =>
-  {
-    // we are catching errors while executing main here as the catch() follows the then()
-    Diagnostics.log("Error found while executing game logic");
-    Diagnostics.log("Error message: " + error.message);
-  }
-);
+[
+  S.root.findFirst("dragHere"),
+])
+.then(main)
+.catch((error) =>
+{
+  Diagnostics.log("Error found while executing GameManager logic");
+  Diagnostics.log("Error message: " + error.message);
+});
 
 async function main(assets) { // Enables async/await in JS [part 1]
 
