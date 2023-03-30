@@ -17,9 +17,9 @@ export async function DownloadAndInsantiateBlock(blockName, root)
       if (_DEBUG) Diagnostics.log(`Block ${blockName} downloaded sucessfully`);
       return Blocks.instantiate(blockName, {name : blockName}).then(async function(blockSceneRoot)
       {
-          if (_DEBUG) Diagnostics.log(`Block has just been instantiated. It will be added to the scene now...`);
+          if (_DEBUG) Diagnostics.log(`Block ${blockName} has just been instantiated. It will be added to the scene now...`);
           await root.addChild(blockSceneRoot);
-          if (_DEBUG) Diagnostics.log(`Block added to the scene`);
+          if (_DEBUG) Diagnostics.log(`Block ${blockName} added to the scene`);
 
           return blockSceneRoot;
       })
