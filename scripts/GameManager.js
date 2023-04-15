@@ -54,7 +54,7 @@ async function main(assets) { // Enables async/await in JS [part 1]
     {
       buttonPress.subscribe(() =>
       {
-        Diagnostics.log("Button pressed!");
+        Diagnostics.log("Main button pressed!");
         DownloadAndInsantiateBlock("PlatformAndMainModel", trackerRoot).then((platformAndMainModelBlock) => 
         {
           platformAndMainModelBlock.outputs.getPulse("onPlatformUp").then((platformUp) =>
@@ -64,7 +64,42 @@ async function main(assets) { // Enables async/await in JS [part 1]
               Diagnostics.log("Platform lifted up!");
               DownloadAndInsantiateBlock("WorkoutButtonsAndMessage", trackerRoot).then((workoutButtonsAndMessageBlock) => 
               {
-                Diagnostics.log("WorkoutButtonsAndMessage instantiated!");
+                workoutButtonsAndMessageBlock.outputs.getPulse("onPushupsButtonPressed").then((pushupButtonPressed) =>
+                {
+                  pushupButtonPressed.subscribe(() =>
+                  {
+                    Diagnostics.log("Pushup button pressed!");
+
+                    platformAndMainModelBlock.inputs.setPulse("liftDownUp", R.once()).then(() => 
+                    {
+                      Diagnostics.log("Pulse sent to the block. The platform will lift down and up...");
+                    });
+
+                    platformAndMainModelBlock.outputs.getPulse("onPlatformDown").then((platformDown) =>
+                    {
+                      mainButtonAndDoorBlock.inputs.setPulse("closeOpenDoor", R.once()).then(() => {
+                        Diagnostics.log("Pulse sent to the block. The door should close...");
+                      });
+                    });
+                  });
+                });
+
+                workoutButtonsAndMessageBlock.outputs.getPulse("onBurpeesButtonPressed").then((burpeesButtonPressed) =>
+                {
+                  burpeesButtonPressed.subscribe(() =>
+                  {
+                    Diagnostics.log("Burpees button pressed!");
+                  });
+                });
+
+                workoutButtonsAndMessageBlock.outputs.getPulse("onSitupsButtonPressed").then((situpsButtonPressed) =>
+                {
+                  situpsButtonPressed.subscribe(() =>
+                  {
+                    Diagnostics.log("Situps button pressed!");
+                  });
+                });
+                
               });
             });
           });

@@ -1,4 +1,4 @@
-import { OpenDoorAnimation } from "./VFX"
+import { OpenDoorAnimation, CloseDoorAnimation, CloseOpenDoorAnimation } from "./VFX"
 
 export const _DEBUG = true;
 
@@ -31,7 +31,18 @@ async function main(assets) {  // Enables async/await in JS [part 1]
 
   P.outputs.getPulse("openDoor").then((openDoorEvt) => openDoorEvt.subscribe(() =>
   {
-    OpenDoorAnimation(leftDoorPivot, rightDoorPivot);
+    OpenDoorAnimation(leftDoorPivot, rightDoorPivot, 2000);
+  }));
+
+  P.outputs.getPulse("closeDoor").then((closeDoorEvt) => closeDoorEvt.subscribe(() =>
+  {
+    CloseDoorAnimation(leftDoorPivot, rightDoorPivot, 1000);
+  }));
+
+  P.outputs.getPulse("openCloseDoor").then((openCloseDoorEvt) => openCloseDoorEvt.subscribe(() =>
+  {
+    Diagnostics.log("The door will be closed and then opened again");
+    CloseOpenDoorAnimation(leftDoorPivot, rightDoorPivot, 1000, 1000, 0);
   }));
 
 }; // Enables async/await in JS [part 2]
